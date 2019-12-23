@@ -1,5 +1,7 @@
 # arangochair
 
+Fork from arangochair. Using Axios to handle authentication.
+
 `arangochair` pushs ArangoDB changes in realtime to you.
 
 ## install
@@ -13,24 +15,36 @@ npm install --save arangochair
 ```es6
 const arangochair = require('arangochair');
 
-const no4 = new arangochair('http://127.0.0.1:8529/'); // ArangoDB node to monitor
-
-const no4 = new arangochair('http://127.0.0.1:8529/myDb'); // ArangoDB node to monitor, with database name
+const no4 = new arangochair({
+    host: 'http://127.0.0.1',
+    port: 8529,
+    db: 'myDb',
+    username: 'username',
+    password: 'password'
+}); // ArangoDB node to monitor, with database name
 
 no4.subscribe({collection:'users'});
-no4.start();
-no4.on('users', (doc, type) => {
-    // do something awesome
+(async () => {
+    try{
+        await no4.start();
+        no4.on('users', (doc, type) => {
+            // do something awesome
 
-    // doc:Buffer
-    // type:'insert/update'|'delete'
-});
+            // doc:Buffer
+            // type:'insert/update'|'delete'
+        });
 
-no4.on('error', (err, httpStatus, headers, body) => {
-    // arangochair stops on errors
-    // check last http request
-    no4.start();
-});
+        no4.on('error', (err, httpStatus, headers, body) => {
+            // arangochair stops on errors
+            // check last http request
+            no4.start();
+        });
+
+    }catch(e){
+        console.error(e)
+    }
+})()
+
 ```
 
 ## subscribe
