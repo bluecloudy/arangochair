@@ -18,7 +18,7 @@ const arangochair = require('arangochair');
 const no4 = new arangochair({
     host: 'http://127.0.0.1',
     port: 8529,
-    db: 'myDb',
+    database: 'myDb',
     username: 'username',
     password: 'password'
 }); // ArangoDB node to monitor, with database name
